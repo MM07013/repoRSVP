@@ -7,6 +7,10 @@ const successMessage = document.getElementById("success-message");
 const syncNote = document.getElementById("sync-note");
 const confirmationCard = document.getElementById("confirmation-card");
 const confirmationDetails = document.getElementById("confirmation-details");
+const captchaQuestion = document.getElementById("captcha-question");
+const captchaAnswer = document.getElementById("captchaAnswer");
+
+let currentCaptchaAnswer = "";
 
 if (GOOGLE_SCRIPT_URL) {
   syncNote.textContent = "Google Sheets sync is on. Each RSVP will save locally and be sent to your sheet.";
@@ -30,6 +34,13 @@ function getResponses() {
 
 function saveResponses(responses) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(responses));
+}
+
+function generateCaptcha() {
+  const firstNumber = Math.floor(Math.random() * 8) + 2;
+  const secondNumber = Math.floor(Math.random() * 8) + 2;
+  currentCaptchaAnswer = String(firstNumber + secondNumber);
+  captchaQuestion.textContent = `What is ${firstNumber} + ${secondNumber}?`;
 }
 
 function renderConfirmation(response) {
@@ -85,9 +96,19 @@ function escapeHtml(value) {
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
+  successMessage.textContent = "";
+
+  const submittedCaptcha = captchaAnswer.value.trim();
+  if (submittedCaptcha !== currentCaptchaAnswer) {
+    successMessage.textContent = "Please answer the human check correctly before submitting.";
+    generateCaptcha();
+    captchaAnswer.value = "";
+    captchaAnswer.focus();
+    return;
+  }
+
   submitButton.disabled = true;
   submitButton.textContent = "Submitting...";
-  successMessage.textContent = "";
 
   const formData = new FormData(form);
   const newResponse = {
@@ -107,11 +128,13 @@ form.addEventListener("submit", async (event) => {
       : "Thanks! Your RSVP has been saved successfully.";
     renderConfirmation(newResponse);
     form.reset();
+    generateCaptcha();
   } catch (error) {
     console.error(error);
     successMessage.textContent = "Your RSVP was saved, but Google Sheets sync did not go through yet.";
     renderConfirmation(newResponse);
     form.reset();
+    generateCaptcha();
   } finally {
     submitButton.disabled = false;
     submitButton.textContent = "Submit";
@@ -122,3 +145,5 @@ const savedResponses = getResponses();
 if (savedResponses.length > 0) {
   renderConfirmation(savedResponses[0]);
 }
+
+generateCaptcha();

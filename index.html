@@ -44,6 +44,19 @@
           </label>
         </fieldset>
 
+        <div class="field captcha-field">
+          <label for="captchaAnswer">Human Check</label>
+          <p id="captcha-question" class="captcha-question"></p>
+          <input
+            id="captchaAnswer"
+            name="captchaAnswer"
+            type="text"
+            inputmode="numeric"
+            placeholder="Enter your answer"
+            required
+          >
+        </div>
+
         <button id="submit-button" type="submit" class="submit-button">Submit</button>
         <p id="success-message" class="success-message" aria-live="polite"></p>
         <p id="sync-note" class="sync-note">
@@ -58,7 +71,7 @@
       <div id="confirmation-details" class="confirmation-details"></div>
     </section>
 
-    <p class="site-version">Version 1.1</p>
+    <p class="site-version">Version 1.2</p>
   </main>
 
   <script src="script.js"></script>

@@ -230,6 +230,15 @@ input[type="radio"] {
   font-weight: 600;
 }
 
+.captcha-question {
+  margin: 0;
+  padding: 0.8rem 1rem;
+  border-radius: var(--radius-sm);
+  background: rgba(217, 105, 65, 0.08);
+  color: var(--primary-dark);
+  font-weight: 600;
+}
+
 .sync-note {
   margin: 0.5rem 0 0;
   color: var(--muted);
