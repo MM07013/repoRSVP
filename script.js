@@ -1,4 +1,4 @@
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxl5FuAfN0qJqGUw5QG9GmWOkPl-_2WarHQ0c9hWBtITuNOaEGTTuV39LcehiuLncqB/exec";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzmoinmQF1QUivCAuWZGF3BB2RYZZGe-5diKFzxd0je8pUijmYCP474o8U7QONQHww6/exec";
 
 const form = document.getElementById("rsvp-form");
 const submitButton = document.getElementById("submit-button");
