@@ -62,8 +62,7 @@ body::after {
   padding: 3rem 0 4rem;
 }
 
-.hero-card,
-.responses-card {
+.hero-card {
   background: var(--surface);
   backdrop-filter: blur(14px);
   border: 1px solid rgba(255, 255, 255, 0.7);
@@ -253,52 +252,6 @@ input[type="radio"] {
   font-family: Consolas, monospace;
 }
 
-.responses-card {
-  margin-top: 1.5rem;
-  padding: 1.5rem;
-}
-
-.confirmation-card h2 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-.confirmation-details {
-  display: grid;
-  gap: 0.9rem;
-}
-
-.confirmation-row {
-  background: rgba(255, 255, 255, 0.88);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  padding: 1rem 1.1rem;
-}
-
-.confirmation-label {
-  display: block;
-  margin-bottom: 0.35rem;
-  color: var(--muted);
-  font-size: 0.92rem;
-  font-weight: 600;
-}
-
-.confirmation-value {
-  display: inline-flex;
-  align-items: center;
-  min-height: 1.2rem;
-  line-height: 1.55;
-}
-
-.confirmation-badge {
-  padding: 0.4rem 0.7rem;
-  border-radius: 999px;
-  font-size: 0.92rem;
-  font-weight: 600;
-  background: var(--danger-soft);
-  color: var(--primary-dark);
-}
-
 .site-version {
   margin: 1rem 0 0;
   text-align: center;
@@ -320,8 +273,7 @@ input[type="radio"] {
   }
 
   .hero-copy,
-  .rsvp-form,
-  .responses-card {
+  .rsvp-form {
     padding: 1rem;
   }
 }

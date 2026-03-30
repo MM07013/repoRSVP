@@ -1,39 +1,16 @@
-const STORAGE_KEY = "vg-birthday-rsvp-responses";
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxl5FuAfN0qJqGUw5QG9GmWOkPl-_2WarHQ0c9hWBtITuNOaEGTTuV39LcehiuLncqB/exec";
 
 const form = document.getElementById("rsvp-form");
 const submitButton = document.getElementById("submit-button");
 const successMessage = document.getElementById("success-message");
 const syncNote = document.getElementById("sync-note");
-const confirmationCard = document.getElementById("confirmation-card");
-const confirmationDetails = document.getElementById("confirmation-details");
 const captchaQuestion = document.getElementById("captcha-question");
 const captchaAnswer = document.getElementById("captchaAnswer");
 
 let currentCaptchaAnswer = "";
 
 if (GOOGLE_SCRIPT_URL) {
-  syncNote.textContent = "Google Sheets sync is on. Each RSVP will save locally and be sent to your sheet.";
-}
-
-function getResponses() {
-  const savedResponses = localStorage.getItem(STORAGE_KEY);
-
-  if (!savedResponses) {
-    return [];
-  }
-
-  try {
-    const parsedResponses = JSON.parse(savedResponses);
-    return Array.isArray(parsedResponses) ? parsedResponses : [];
-  } catch (error) {
-    console.error("Unable to parse stored RSVP responses.", error);
-    return [];
-  }
-}
-
-function saveResponses(responses) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(responses));
+  syncNote.textContent = "Google Sheets sync is on. Each RSVP will be sent to your sheet.";
 }
 
 function generateCaptcha() {
@@ -41,25 +18,6 @@ function generateCaptcha() {
   const secondNumber = Math.floor(Math.random() * 8) + 2;
   currentCaptchaAnswer = String(firstNumber + secondNumber);
   captchaQuestion.textContent = `What is ${firstNumber} + ${secondNumber}?`;
-}
-
-function renderConfirmation(response) {
-  confirmationDetails.innerHTML = `
-    <div class="confirmation-row">
-      <span class="confirmation-label">Full Name</span>
-      <span class="confirmation-value">${escapeHtml(response.fullName)}</span>
-    </div>
-    <div class="confirmation-row">
-      <span class="confirmation-label">Address</span>
-      <span class="confirmation-value">${escapeHtml(response.address)}</span>
-    </div>
-    <div class="confirmation-row">
-      <span class="confirmation-label">RSVP Response</span>
-      <span class="confirmation-value confirmation-badge">${escapeHtml(response.attendance)}</span>
-    </div>
-  `;
-
-  confirmationCard.hidden = false;
 }
 
 async function sendToGoogleSheets(response) {
@@ -117,33 +75,20 @@ form.addEventListener("submit", async (event) => {
     attendance: formData.get("attendance")?.toString() ?? "",
   };
 
-  const responses = getResponses();
-  responses.unshift(newResponse);
-  saveResponses(responses);
-
   try {
     const result = await sendToGoogleSheets(newResponse);
     successMessage.textContent = result.synced
-      ? "Thanks! Your RSVP was received successfully."
-      : "Thanks! Your RSVP has been saved successfully.";
-    renderConfirmation(newResponse);
+      ? `Thanks ${newResponse.fullName}! Your RSVP response was "${newResponse.attendance}".`
+      : `Thanks ${newResponse.fullName}! Your RSVP response was "${newResponse.attendance}".`;
     form.reset();
     generateCaptcha();
   } catch (error) {
     console.error(error);
-    successMessage.textContent = "Your RSVP was saved, but Google Sheets sync did not go through yet.";
-    renderConfirmation(newResponse);
-    form.reset();
-    generateCaptcha();
+    successMessage.textContent = "Your RSVP could not be submitted right now. Please try again.";
   } finally {
     submitButton.disabled = false;
     submitButton.textContent = "Submit";
   }
 });
-
-const savedResponses = getResponses();
-if (savedResponses.length > 0) {
-  renderConfirmation(savedResponses[0]);
-}
 
 generateCaptcha();
