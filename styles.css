@@ -9,6 +9,7 @@
   --shadow: 0 24px 60px rgba(138, 88, 62, 0.16);
   --primary: #d96941;
   --primary-dark: #b94d29;
+  --primary-soft: rgba(217, 105, 65, 0.1);
   --success: #157347;
   --danger-soft: #fff3ed;
   --radius-lg: 28px;
@@ -68,6 +69,7 @@ body::after {
   border: 1px solid rgba(255, 255, 255, 0.7);
   box-shadow: var(--shadow);
   border-radius: var(--radius-lg);
+  overflow: hidden;
 }
 
 .hero-card {
@@ -82,6 +84,19 @@ body::after {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  position: relative;
+}
+
+.hero-copy::after {
+  content: "";
+  width: 130px;
+  height: 130px;
+  margin-top: 2rem;
+  border-radius: 28px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.85), transparent),
+    linear-gradient(135deg, rgba(217, 105, 65, 0.18), rgba(255, 214, 184, 0.5));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85);
 }
 
 .eyebrow {
@@ -121,7 +136,20 @@ h1 {
 .field {
   display: grid;
   gap: 0.6rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.9rem;
+}
+
+.compact-grid {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.compact-grid.two-up {
+  grid-template-columns: 1.35fr 0.85fr;
+}
+
+.compact-grid.top-grid {
+  grid-template-columns: 1.35fr 0.85fr;
 }
 
 label,
@@ -131,11 +159,13 @@ legend {
 
 input[type="text"],
 input[type="email"],
+input[type="number"],
+input[type="tel"],
 textarea {
   width: 100%;
   border: 1px solid rgba(148, 163, 184, 0.45);
   border-radius: var(--radius-sm);
-  padding: 0.95rem 1rem;
+  padding: 0.82rem 0.95rem;
   font: inherit;
   color: var(--text);
   background: #fff;
@@ -144,6 +174,8 @@ textarea {
 
 input[type="text"]:focus,
 input[type="email"]:focus,
+input[type="number"]:focus,
+input[type="tel"]:focus,
 textarea:focus {
   outline: none;
   border-color: rgba(217, 105, 65, 0.7);
@@ -169,7 +201,7 @@ textarea {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.95rem 1rem;
+  padding: 0.8rem 0.95rem;
   background: var(--surface-strong);
   border: 1px solid rgba(148, 163, 184, 0.35);
   border-radius: var(--radius-sm);
@@ -231,11 +263,18 @@ input[type="radio"] {
   font-weight: 600;
 }
 
+.field-note {
+  margin: -0.1rem 0 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+  text-align: right;
+}
+
 .captcha-question {
   margin: 0;
   padding: 0.8rem 1rem;
   border-radius: var(--radius-sm);
-  background: rgba(217, 105, 65, 0.08);
+  background: linear-gradient(135deg, var(--primary-soft), rgba(255, 230, 214, 0.72));
   color: var(--primary-dark);
   font-weight: 600;
 }
@@ -277,5 +316,16 @@ input[type="radio"] {
   .hero-copy,
   .rsvp-form {
     padding: 1rem;
+  }
+
+  .hero-copy::after {
+    width: 96px;
+    height: 96px;
+    margin-top: 1.25rem;
+  }
+
+  .compact-grid.two-up,
+  .compact-grid.top-grid {
+    grid-template-columns: 1fr;
   }
 }

@@ -6,11 +6,19 @@ const successMessage = document.getElementById("success-message");
 const syncNote = document.getElementById("sync-note");
 const captchaQuestion = document.getElementById("captcha-question");
 const captchaAnswer = document.getElementById("captchaAnswer");
+const comments = document.getElementById("comments");
+const commentsCount = document.getElementById("comments-count");
+const phoneInput = document.getElementById("phone");
+const guestCountInput = document.getElementById("guestCount");
 
 let currentCaptchaAnswer = "";
 
 if (GOOGLE_SCRIPT_URL) {
   syncNote.textContent = "Google Sheets sync is on. Each RSVP will be sent to your sheet.";
+}
+
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
 }
 
 function generateCaptcha() {
@@ -27,9 +35,15 @@ async function sendToGoogleSheets(response) {
 
   const payload = new URLSearchParams({
     fullName: response.fullName,
+    guestCount: response.guestCount,
     email: response.email,
     address: response.address,
+    city: response.city,
+    state: response.state,
+    zip: response.zip,
+    phone: response.phone,
     attendance: response.attendance,
+    comments: response.comments,
   });
 
   const request = await fetch(GOOGLE_SCRIPT_URL, {
@@ -72,10 +86,40 @@ form.addEventListener("submit", async (event) => {
   const formData = new FormData(form);
   const newResponse = {
     fullName: formData.get("fullName")?.toString().trim() ?? "",
+    guestCount: formData.get("guestCount")?.toString().trim() ?? "",
     email: formData.get("email")?.toString().trim() ?? "",
     address: formData.get("address")?.toString().trim() ?? "",
+    city: formData.get("city")?.toString().trim() ?? "",
+    state: formData.get("state")?.toString().trim() ?? "",
+    zip: formData.get("zip")?.toString().trim() ?? "",
+    phone: formData.get("phone")?.toString().trim() ?? "",
     attendance: formData.get("attendance")?.toString() ?? "",
+    comments: formData.get("comments")?.toString().trim() ?? "",
   };
+
+  if (!/^\d+$/.test(newResponse.guestCount) || Number(newResponse.guestCount) < 1) {
+    successMessage.textContent = "Please enter a valid number of people attending.";
+    guestCountInput.focus();
+    submitButton.disabled = false;
+    submitButton.textContent = "Submit";
+    return;
+  }
+
+  if (newResponse.email && !isValidEmail(newResponse.email)) {
+    successMessage.textContent = "Please enter a valid email address or leave it blank.";
+    form.querySelector("#email")?.focus();
+    submitButton.disabled = false;
+    submitButton.textContent = "Submit";
+    return;
+  }
+
+  if (!/^\d{10,15}$/.test(newResponse.phone)) {
+    successMessage.textContent = "Please enter a valid phone number using numbers only.";
+    phoneInput.focus();
+    submitButton.disabled = false;
+    submitButton.textContent = "Submit";
+    return;
+  }
 
   try {
     const result = await sendToGoogleSheets(newResponse);
@@ -94,3 +138,15 @@ form.addEventListener("submit", async (event) => {
 });
 
 generateCaptcha();
+
+comments.addEventListener("input", () => {
+  commentsCount.textContent = `${comments.value.length} / 200`;
+});
+
+phoneInput.addEventListener("input", () => {
+  phoneInput.value = phoneInput.value.replace(/\D/g, "");
+});
+
+guestCountInput.addEventListener("input", () => {
+  guestCountInput.value = guestCountInput.value.replace(/\D/g, "");
+});

@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=1.6">
+  <link rel="stylesheet" href="styles.css?v=1.9">
 </head>
 <body>
   <main class="page-shell">
@@ -22,19 +22,58 @@
       </div>
 
       <form id="rsvp-form" class="rsvp-form">
-        <div class="field">
-          <label for="fullName">Full Name</label>
-          <input id="fullName" name="fullName" type="text" placeholder="Enter your full name" required>
+        <div class="compact-grid top-grid">
+          <div class="field">
+            <label for="fullName">Full Name</label>
+            <input id="fullName" name="fullName" type="text" placeholder="Enter your full name" required>
+          </div>
+
+          <div class="field">
+            <label for="guestCount">How Many People Attending</label>
+            <input id="guestCount" name="guestCount" type="number" min="1" step="1" placeholder="1" required>
+          </div>
+        </div>
+
+        <div class="compact-grid two-up">
+          <div class="field">
+            <label for="email">Email Address</label>
+            <input id="email" name="email" type="email" placeholder="Enter your email address">
+          </div>
+
+          <div class="field">
+            <label for="phone">Phone</label>
+            <input id="phone" name="phone" type="tel" inputmode="numeric" pattern="[0-9]{10,15}" placeholder="Phone number" required>
+          </div>
+        </div>
+
+        <div class="compact-grid two-up">
+          <div class="field">
+            <label for="address">Address</label>
+            <input id="address" name="address" type="text" placeholder="Street address" required>
+          </div>
+
+          <div class="field">
+            <label for="city">City</label>
+            <input id="city" name="city" type="text" placeholder="City" required>
+          </div>
+        </div>
+
+        <div class="compact-grid two-up">
+          <div class="field">
+            <label for="state">State</label>
+            <input id="state" name="state" type="text" placeholder="State" maxlength="20" required>
+          </div>
+
+          <div class="field">
+            <label for="zip">Zip</label>
+            <input id="zip" name="zip" type="text" inputmode="numeric" placeholder="Zip code" maxlength="10" required>
+          </div>
         </div>
 
         <div class="field">
-          <label for="email">Email Address</label>
-          <input id="email" name="email" type="email" placeholder="Enter your email address" required>
-        </div>
-
-        <div class="field">
-          <label for="address">Address</label>
-          <textarea id="address" name="address" rows="3" placeholder="Enter your address" required></textarea>
+          <label for="comments">Comments</label>
+          <textarea id="comments" name="comments" rows="3" maxlength="200" placeholder="Add a note if you'd like (max 200 characters)"></textarea>
+          <p id="comments-count" class="field-note">0 / 200</p>
         </div>
 
         <fieldset class="field attendance-group">
@@ -71,9 +110,9 @@
       </form>
     </section>
 
-    <p class="site-version">Version 1.6</p>
+    <p class="site-version">Version 1.9</p>
   </main>
 
-  <script src="script.js?v=1.6"></script>
+  <script src="script.js?v=1.9"></script>
 </body>
 </html>
