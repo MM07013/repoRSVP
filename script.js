@@ -3,6 +3,7 @@ const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzmoinmQF1QUi
 const form = document.getElementById("rsvp-form");
 const submitButton = document.getElementById("submit-button");
 const successMessage = document.getElementById("success-message");
+const thankYouCard = document.getElementById("thank-you-card");
 const attendanceSelect = document.getElementById("attendance");
 const captchaQuestion = document.getElementById("captcha-question");
 const captchaAnswer = document.getElementById("captchaAnswer");
@@ -92,6 +93,7 @@ function updateConditionalFields() {
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
   successMessage.textContent = "";
+  thankYouCard.hidden = true;
 
   const submittedCaptcha = captchaAnswer.value.trim();
   if (submittedCaptcha !== currentCaptchaAnswer) {
@@ -147,6 +149,7 @@ form.addEventListener("submit", async (event) => {
     successMessage.textContent = result.synced
       ? `Thanks ${newResponse.fullName}! Your RSVP response was "${newResponse.attendance}".`
       : `Thanks ${newResponse.fullName}! Your RSVP response was "${newResponse.attendance}".`;
+    thankYouCard.hidden = false;
     form.reset();
     commentsCount.textContent = "0 / 200";
     updateConditionalFields();
